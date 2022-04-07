@@ -135,7 +135,7 @@ path_to_glove_file = 'F:/data/glove.6B.300d.txt' # download link: http://nlp.sta
 embedding_dim = 300
 learning_rate = 1e-3
 batch_size = 1024 # original : 1024
-epochs = 10 # original : 20
+epochs = 30 # original : 20
 sequence_len = 100
 
 # Define train and test labels
