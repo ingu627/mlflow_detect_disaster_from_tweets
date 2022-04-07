@@ -41,7 +41,7 @@ parser.add_argument("--batch_size", default=100, type=int, help="batch size")
 parser.add_argument("--train_steps", default=1000, type=int, help="number of training steps")
 ## Read train data
 # Rreading train dataset
-file_path = "./data/train.csv"
+file_path = "./data/before_train.csv"
 raw_data = pd.read_csv(file_path)
 print("Data points count: ", raw_data['id'].count())
 raw_data.head()
@@ -135,7 +135,7 @@ path_to_glove_file = 'F:/data/glove.6B.300d.txt' # download link: http://nlp.sta
 embedding_dim = 300
 learning_rate = 1e-3
 batch_size = 1024 # original : 1024
-epochs = 5 # original : 20
+epochs = 10 # original : 20
 sequence_len = 100
 
 # Define train and test labels
@@ -207,12 +207,14 @@ history = model.fit(X_train,
                     validation_data=(X_test, y_test))
 
 # Re-Train the LSTM Model
-history = model.fit(X_train,
-                    y_train,
-                    batch_size=batch_size,
-                    epochs=1, 
-                    validation_data=(X_test, y_test))
+# history = model.fit(X_train,
+#                     y_train,
+#                     batch_size=batch_size,
+#                     epochs=1, 
+#                     validation_data=(X_test, y_test))
 
+# save model
+model.save('model.h5')
 
 # Plot train accuracy and loss
 accuraties = history.history['accuracy']

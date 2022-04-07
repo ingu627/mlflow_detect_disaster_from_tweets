@@ -1,0 +1,15 @@
+artifact_uri: file:///F:/Temporary_Storage/detect_disaster_from_tweets/mlruns/0/da123dd1b20d46c5963414ca9cb3ce03/artifacts
+end_time: 1649313583956
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: da123dd1b20d46c5963414ca9cb3ce03
+run_uuid: da123dd1b20d46c5963414ca9cb3ce03
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1649313369916
+status: 3
+tags: []
+user_id: poeun
