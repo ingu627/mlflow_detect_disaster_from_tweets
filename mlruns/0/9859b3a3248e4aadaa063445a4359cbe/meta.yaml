@@ -1,0 +1,15 @@
+artifact_uri: file:///F:/Temporary_Storage/detect_disaster_from_tweets/mlruns/0/9859b3a3248e4aadaa063445a4359cbe/artifacts
+end_time: 1649342474594
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: 9859b3a3248e4aadaa063445a4359cbe
+run_uuid: 9859b3a3248e4aadaa063445a4359cbe
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1649342474567
+status: 3
+tags: []
+user_id: ingu627

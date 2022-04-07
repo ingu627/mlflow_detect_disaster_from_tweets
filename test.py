@@ -214,7 +214,7 @@ history = model.fit(X_train,
 #                     validation_data=(X_test, y_test))
 
 # save model
-model.save('model.h5')
+# model.save('model.h5')
 
 # Plot train accuracy and loss
 accuraties = history.history['accuracy']
