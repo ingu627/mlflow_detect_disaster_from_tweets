@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ingu627/mlflow_detect_disaster_from_tweets/test_env/mlruns/0/da482a408def4e928bba3b80feb21c83/artifacts
+end_time: 1649399003903
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: da482a408def4e928bba3b80feb21c83
+run_uuid: da482a408def4e928bba3b80feb21c83
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1649398939402
+status: 3
+tags: []
+user_id: ingu627

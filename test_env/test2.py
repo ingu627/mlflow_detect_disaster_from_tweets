@@ -1,4 +1,5 @@
-# 평시 데이터로 학습 후, 전시 데이터를 가지고 추가 재학습
+# 평시 데이터로 학습 후, 
+# 전시 데이터를 가지고 추가 재학습(20%)
 
 import pandas as pd
 import numpy as np
