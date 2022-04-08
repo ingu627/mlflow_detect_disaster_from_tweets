@@ -1,5 +1,4 @@
 # 평시 데이터로 학습 후, 전시 데이터를 가지고 추가 재학습
-# test_retrain_load_model.py 와 연계
 
 import pandas as pd
 import numpy as np
@@ -44,7 +43,7 @@ parser.add_argument("--batch_size", default=100, type=int, help="batch size")
 parser.add_argument("--train_steps", default=1000, type=int, help="number of training steps")
 ## Read train data
 # Rreading train dataset
-file_path = "./data/before_train.csv"
+file_path = "../data/before20after80Base.csv"
 raw_data = pd.read_csv(file_path)
 print("Data points count: ", raw_data['id'].count())
 raw_data.head()
@@ -134,7 +133,7 @@ X_train, X_test,y_train, y_test = model_selection.train_test_split(raw_data[feat
 
 # LSTM
 # Define some hyperparameters
-path_to_glove_file = './data/glove.6B.300d.txt' # download link: http://nlp.stanford.edu/data/glove.6B.zip
+path_to_glove_file = '../../data/glove.6B.300d.txt' # download link: http://nlp.stanford.edu/data/glove.6B.zip
 embedding_dim = 300
 learning_rate = 1e-3
 batch_size = 1024 # original : 1024
@@ -255,3 +254,126 @@ ax.set(xlabel="Predicted Value", ylabel="True Value", title="Confusion Matrix")
 ax.set_yticklabels(labels=['0', '1'], rotation=0)
 # plt.show()
 
+## Read train data
+# Rreading train dataset
+file_path_after = "../data/before50after50Experi.csv"
+raw_data_after = pd.read_csv(file_path_after)
+print("Data points count: ", raw_data['id'].count())
+raw_data_after.head()
+
+## Cleaning Data
+plt.figure(figsize=(15,8))
+raw_data_after['word_count'] = raw_data_after['text'].apply(lambda x: len(x.split(" ")) )
+sns.distplot(raw_data_after['word_count'].values, hist=True, kde=True, kde_kws={"shade": True})
+plt.axvline(raw_data_after['word_count'].describe()['25%'], ls="--")
+plt.axvline(raw_data_after['word_count'].describe()['50%'], ls="--")
+plt.axvline(raw_data_after['word_count'].describe()['75%'], ls="--")
+
+plt.grid()
+plt.suptitle("Word count histogram")
+# plt.show()
+
+# remove rows with under 3 words
+raw_data_after = raw_data_after[raw_data_after['word_count']>2]
+raw_data_after = raw_data_after.reset_index()
+
+print("25th percentile: ", raw_data_after['word_count'].describe()['25%'])
+print("mean: ", raw_data_after['word_count'].describe()['50%'])
+print("75th percentile: ", raw_data_after['word_count'].describe()['75%'])
+# Clean text columns
+stop_words = set(stopwords.words('english'))
+stemmer = SnowballStemmer('english')
+
+raw_data_after['clean_text'] = raw_data_after['text'].apply(lambda x: clean_text(x) )
+raw_data_after['keyword'] = raw_data_after['keyword'].fillna("none")
+raw_data_after['clean_keyword'] = raw_data_after['keyword'].apply(lambda x: clean_text(x) )
+
+# Combine column 'clean_keyword' and 'clean_text' into one
+raw_data_after['keyword_text'] = raw_data_after['clean_keyword'] + " " + raw_data_after["clean_text"]
+
+## Prepare train and test data
+feature = 'keyword_text'
+label = "target"
+
+# split train and test
+X_train_after, X_test_after,y_train_after, y_test_after = model_selection.train_test_split(raw_data_after[feature],
+                                                                   raw_data_after[label],
+                                                                   test_size=0.3,
+                                                                   random_state=0, 
+                                                                   shuffle=True)
+
+# LSTM
+# Define some hyperparameters
+path_to_glove_file = '../../data/glove.6B.300d.txt' # download link: http://nlp.stanford.edu/data/glove.6B.zip
+embedding_dim = 300
+learning_rate = 1e-3
+batch_size = 1024 # original : 1024
+epochs = 6 # original : 20
+sequence_len = 100
+
+# Define train and test labels
+y_train_LSTM_after = y_train_after.values.reshape(-1,1)
+y_test_LSTM_after = y_test_after.values.reshape(-1,1)
+
+print("Training Y shape:", y_train_LSTM_after.shape)
+print("Testing Y shape:", y_test_LSTM_after.shape)
+
+# Tokenize train data
+tokenizer = Tokenizer()
+tokenizer.fit_on_texts(X_train_after)
+
+word_index = tokenizer.word_index
+vocab_size = len(word_index) + 1
+print("Vocabulary Size: ", vocab_size)
+
+# Pad train and test 
+X_train_after = pad_sequences(tokenizer.texts_to_sequences(X_train_after), maxlen=sequence_len)
+X_test_after = pad_sequences(tokenizer.texts_to_sequences(X_test_after), maxlen=sequence_len)
+
+print("Training X shape: ", X_train_after.shape)
+print("Testing X shape: ", X_test_after.shape)
+
+model = tf.keras.models.load_model('model.h5')
+
+# Train the LSTM Model
+history = model.fit(X_train_after,
+                    y_train_after,
+                    batch_size=batch_size,
+                    epochs=epochs, 
+                    validation_data=(X_test_after, y_test_after))
+
+# Plot train accuracy and loss
+accuraties_after = history.history['accuracy']
+losses_after = history.history['loss']
+accuraties_losses_after = list(zip(accuraties_after,losses_after))
+
+accuraties_losses_df_after = pd.DataFrame(accuraties_after, columns={"accuracy", "loss"})
+
+plt.figure(figsize=(10,4))
+plt.suptitle("Train Accuracy vs Train Loss")
+sns.lineplot(data=accuraties_losses_df_after)
+# plt.show()
+
+# Evaluate the model
+predicted_after = model.predict(X_test_after, verbose=1, batch_size=10000)
+
+y_predicted_after = [1 if each > 0.5 else 0 for each in predicted_after]
+
+score_after, test_accuracy_after = model.evaluate(X_test_after, y_test_after, batch_size=10000)
+mlflow.log_metric("SCORE", score_after)
+mlflow.log_metric("TEST_ACCURACY", test_accuracy_after)
+
+# mlflow.tensorflow.log_model(model, "model")
+
+
+print("Test Accuracy: ", test_accuracy_after)
+print(metrics.classification_report(list(y_test_after), y_predicted_after))
+
+# Plot confusion matrix
+conf_matrix_after = metrics.confusion_matrix(y_test_after, y_predicted_after)
+
+fig, ax = plt.subplots()
+sns.heatmap(conf_matrix_after, cbar=False, cmap='Reds', annot=True, fmt='d')
+ax.set(xlabel="Predicted Value", ylabel="True Value", title="Confusion Matrix")
+ax.set_yticklabels(labels=['0', '1'], rotation=0)
+# plt.show()

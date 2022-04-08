@@ -1,4 +1,4 @@
-# 평시 데이터로 모델 학습 후 전시 데이터 넣었을 때
+# 평시 데이터로 모델 학습 후 전시 데이터(모델학습X) 넣었을 때
 
 import pandas as pd
 import numpy as np
@@ -43,7 +43,7 @@ parser.add_argument("--batch_size", default=100, type=int, help="batch size")
 parser.add_argument("--train_steps", default=1000, type=int, help="number of training steps")
 ## Read train data
 # Rreading train dataset
-file_path = "./data/before_train.csv"
+file_path = "../data/before20after80Base.csv"
 raw_data = pd.read_csv(file_path)
 print("Data points count: ", raw_data['id'].count())
 raw_data.head()
@@ -133,7 +133,7 @@ X_train, X_test,y_train, y_test = model_selection.train_test_split(raw_data[feat
 
 # LSTM
 # Define some hyperparameters
-path_to_glove_file = 'data/glove.6B.300d.txt' # download link: http://nlp.stanford.edu/data/glove.6B.zip
+path_to_glove_file = '../../data/glove.6B.300d.txt' # download link: http://nlp.stanford.edu/data/glove.6B.zip
 embedding_dim = 300
 learning_rate = 1e-3
 batch_size = 1024 # original : 1024
@@ -256,7 +256,7 @@ ax.set_yticklabels(labels=['0', '1'], rotation=0)
 
 ## Read after_train data
 # Rreading train dataset
-file_path = "./data/after_train.csv"
+file_path = "../data/before50after50Experi.csv"
 raw_data = pd.read_csv(file_path)
 print("Data points count: ", raw_data['id'].count())
 raw_data.head()
