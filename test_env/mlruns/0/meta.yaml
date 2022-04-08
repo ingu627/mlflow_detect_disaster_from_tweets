@@ -1,0 +1,4 @@
+artifact_location: file:///home/ingu627/mlflow_detect_disaster_from_tweets/test_env/mlruns/0
+experiment_id: '0'
+lifecycle_stage: active
+name: Default
