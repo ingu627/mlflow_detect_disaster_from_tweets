@@ -347,7 +347,7 @@ accuraties_after = history.history['accuracy']
 losses_after = history.history['loss']
 accuraties_losses_after = list(zip(accuraties_after,losses_after))
 
-accuraties_losses_df_after = pd.DataFrame(accuraties_after, columns={"accuracy", "loss"})
+accuraties_losses_df_after = pd.DataFrame(accuraties_losses_after, columns={"accuracy", "loss"})
 
 plt.figure(figsize=(10,4))
 plt.suptitle("Train Accuracy vs Train Loss")
