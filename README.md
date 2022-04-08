@@ -22,6 +22,6 @@
 
 ### 연구 : 재난 대응 기계학습 모델의 Data Drift 문제에 대한 MLOps 기반 Adaptation 방안 연구
 
-
+- Data Drift : 
 
 

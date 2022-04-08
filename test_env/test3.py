@@ -37,7 +37,6 @@ from tensorflow import estimator as tf_estimator
 import mlflow.tensorflow
 
 
-print(f'iteration : {i+1}번째')
 # Enable auto-logging to MLflow to capture TensorBoard metrics.
 mlflow.tensorflow.autolog()
 
@@ -46,7 +45,7 @@ parser.add_argument("--batch_size", default=100, type=int, help="batch size")
 parser.add_argument("--train_steps", default=1000, type=int, help="number of training steps")
 ## Read train data
 # Rreading train dataset
-file_path = "./data/after_train.csv"
+file_path = "../data/before50after50Experi.csv"
 raw_data = pd.read_csv(file_path)
 print("Data points count: ", raw_data['id'].count())
 raw_data.head()
@@ -136,7 +135,7 @@ X_train, X_test,y_train, y_test = model_selection.train_test_split(raw_data[feat
 
 # LSTM
 # Define some hyperparameters
-path_to_glove_file = '../data/glove.6B.300d.txt' # download link: http://nlp.stanford.edu/data/glove.6B.zip
+path_to_glove_file = '../../data/glove.6B.300d.txt' # download link: http://nlp.stanford.edu/data/glove.6B.zip
 embedding_dim = 300
 learning_rate = 1e-3
 batch_size = 1024 # original : 1024
