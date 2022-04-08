@@ -255,7 +255,7 @@ ax.set_yticklabels(labels=['0', '1'], rotation=0)
 
 ## Read train data
 # Rreading train dataset
-file_path_after = "../data/before40after60Origin.csv"
+file_path_after = "../data/before40after60.csv"
 raw_data_after = pd.read_csv(file_path_after)
 print("Data points count: ", raw_data['id'].count())
 raw_data_after.head()
