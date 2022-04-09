@@ -61,12 +61,17 @@
   2. drift 후 데이터 (가정) : 재난O 40%, 재난X 60%
   3. epoch : 50회, epoch of retraining : 20회
   4. batch size : 1024, total batch size : 10000
+  5. Learning rate : 0.001, optimizer : Adam, loss : binary_crossentropy
   5. 같은 작업 20회 반복해서 평균 정확도 구하기
-  5. test accuracy로 성능 비교
+  6. test accuracy로 성능 비교
 
 <br>
 
 - **결과**
-  - "drift 전 데이터"의 모델 : 79% 
-  - "drift 전 데이터"의 모델로 "drift 후 데이터" test (재학습 X): 56% 
-  - "drift 전 데이터"의 모델로 "drift 후 데이터" 재학습(40%) test : 72%
+  - "drift 전 데이터"의 모델 : 78.19% 
+  - "drift 전 데이터"의 모델로 "drift 후 데이터" test (재학습 X): 56.47% 
+  - "drift 전 데이터"의 모델로 "drift 후 데이터" 재학습(20%) test : 61.11%
+  - "drift 전 데이터"의 모델로 "drift 후 데이터" 재학습(40%) test : 69.83%
+  - "drift 전 데이터"의 모델로 "drift 후 데이터" 재학습(60%) test : 71.04%
+  - "drift 전 데이터"의 모델로 "drift 후 데이터" 재학습(80%) test : 72.06%
+  - "drift 전 데이터"의 모델로 "drift 후 데이터" 재학습(100%) test : 71.18%
