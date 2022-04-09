@@ -18,10 +18,23 @@
 - **CPU** : Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
 - **RAM** : 32GiB
 - **GPU** : NVIDIA Corporation TU104 [GeForce RTX 2080]
+- **Python** : 3.8
   - **CUDA** : 11.3
   - **CuDnn** : 8.2.1
   - **Tensorflow-gpu** : 2.8.0
-  - **Python** : 3.8
+  - **MLflow** : 1.24.0
+
+<br>
+
+### 각 폴더 의미
+
+- **data** : 각 데이터
+- **etc(preprocess)** : 데이터를 추출하기 위한 코드
+- **mlruns/0** : 임의의 mlflow 작업
+- **original_code** : 자연어 처리 참조 코드
+- **test_env** : 실제 연구를 위한 test 폴더
+- **detect_disaster_from_tweets (file)** : mlflow 작업을 위한 기본 코드
+
 
 
 <br>
@@ -30,9 +43,30 @@
 
 - **Data Drift** : 데이터 특징, 구조, 의미론 및 인프라에 대한 예기치 않은 변경 사항
 
+<br>
+
 - **실험 조건**
   1. Drift 대응 전략에 따른 정확도와 에포크당 정확도 비교
   2. 재학습 정도에 따른 정확도 비교
   3. 데이터 드리프트 정도에 따른 비교
 
+<br>
 
+- **실험 환경**
+  - **target label**
+    - **1** : 재난 상황 O
+    - **0** : 재난 상황 X
+
+  1. drift 전 데이터 (가정) : 재난O 30%, 재난X 70%
+  2. drift 후 데이터 (가정) : 재난O 40%, 재난X 60%
+  3. epoch : 50회, epoch of retraining : 20회
+  4. batch size : 1024, total batch size : 10000
+  5. 같은 작업 20회 반복해서 평균 정확도 구하기
+  5. test accuracy로 성능 비교
+
+<br>
+
+- **결과**
+  - "drift 전 데이터"의 모델 : 79% 
+  - "drift 전 데이터"의 모델로 "drift 후 데이터" test (재학습 X): 56% 
+  - "drift 전 데이터"의 모델로 "drift 후 데이터" 재학습(40%) test : 72%
